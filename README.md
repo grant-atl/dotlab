@@ -77,9 +77,9 @@ Animations stop when the canvas leaves the viewport or the tab is hidden. People
 | `npm run dev` | Start the local site. |
 | `npm run build` | Check TypeScript and build the site into `dist/`. |
 | `npm run preview` | Serve the built site locally. |
-| `npm test` | Check shape geometry, animation behavior, and dialog closing. |
+| `npm test` | Check shape geometry, animation behavior, dialog closing, and mobile navigation. |
 
-The shape formulas are in [patterns.ts](src/lib/patterns.ts). [DotField.tsx](src/components/DotField.tsx) handles drawing and motion. The website uses React, TypeScript, and Vite.
+The shape formulas are in [patterns.ts](src/lib/patterns.ts). [DotField.tsx](src/components/DotField.tsx) handles drawing and motion. The website uses React, TypeScript, Vite, and [Motion](https://motion.dev/) for the mobile menu.
 
 The [llms.txt](public/llms.txt) reference is served at `/llms.txt`.
 

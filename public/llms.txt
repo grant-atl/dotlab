@@ -4,7 +4,7 @@
 
 Open an animation in the Library to access its Playground. Download .tsx saves a standalone DotField.tsx containing all 20 patterns and the license. Copy component copies the same source with a commented usage example using the current settings. The Code tab's Copy usage button copies only the usage example.
 
-The exported component requires React 18+ and a build setup that supports TSX. It renders in the browser, includes a 'use client' directive, and imports only React. The website separately uses thinking-orbs in its footer; the exported component does not require it.
+The exported component requires React 18+ and a build setup that supports TSX. It renders in the browser, includes a 'use client' directive, and imports only React. The website separately uses Motion for its mobile menu and thinking-orbs in its footer; the exported component requires neither.
 
 Set a height on the component or its parent. The canvas background is transparent.
 

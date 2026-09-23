@@ -10,6 +10,7 @@
     "test": "node --experimental-strip-types --test tests/*.test.ts"
   },
   "dependencies": {
+    "motion": "^13.4.2",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "thinking-orbs": "^0.3.1"

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ThinkingOrb } from "thinking-orbs";
 import { DotField } from "./components/DotField";
+import { MobileNav } from "./components/MobileNav";
 import { PATTERNS, type PatternId } from "./lib/patterns";
 import { closeDialog } from "./lib/dialog";
 import fieldSource from "./components/DotField.tsx?raw";
@@ -232,6 +233,10 @@ export default function App() {
           <span>Get the source</span>
           <Icon name="external" size={13} />
         </a>
+        <MobileNav
+          onPlayground={() => setSelected("sphere")}
+          reducedMotion={reducedMotion}
+        />
       </header>
 
       <main>
@@ -280,7 +285,6 @@ export default function App() {
               <span>
                 <i />
                 {heroPattern.name}
-                <span className="art-caption"> / LIVE CANVAS</span>
               </span>
               <div className="hero-art-actions">
                 <button
