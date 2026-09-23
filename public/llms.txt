@@ -1,0 +1,48 @@
+# Dot / Lab
+
+> A library of 20 Canvas 2D dot animations for React hero sections, licensed under MIT.
+
+Open an animation in the Library to access its Playground. Download .tsx saves a standalone DotField.tsx containing all 20 patterns and the license. Copy component copies the same source with a commented usage example using the current settings. The Code tab's Copy usage button copies only the usage example.
+
+The exported component requires React 18+ and a build setup that supports TSX. It renders in the browser, includes a 'use client' directive, and imports only React. The website separately uses thinking-orbs in its footer; the exported component does not require it.
+
+Set a height on the component or its parent. The canvas background is transparent.
+
+```tsx
+import { DotField } from './DotField';
+
+<DotField pattern="sphere" color="#baff66" style={{ height: 480 }} />
+```
+
+Props and defaults:
+
+- `pattern`: `"sphere"`; select one of the IDs below.
+- `color`: `"#baff66"`; any CSS color.
+- `speed`: `1`; clamped to 0–5. Zero stops animation.
+- `paused`: `false`; freezes animation at its current time.
+- `density`: `1`; 1,150 dots by default, clamped to 160–2,200 dots.
+- `morph`: `false`; animates a transition when the caller changes `pattern`.
+- `className`: unset; optional canvas CSS class.
+- `style`: unset; optional React styles, including height.
+
+Pattern IDs:
+
+```text
+sphere torus wave vortex helix
+ripple galaxy cube infinity aurora
+dna bloom tunnel orbit terrain
+knot rain constellation pulse lattice
+```
+
+The component pauses offscreen and in hidden tabs, and uses a static frame for reduced-motion preferences. Pattern changes while paused or under reduced motion display the new shape without a transition. The website hero cycles sphere, torus, and wave every six seconds while active; the exported component has no automatic pattern cycle.
+
+Keep the included MIT license notice when redistributing the component.
+
+## Pages
+
+- [Home](/): Hero preview and link to the GitHub repository.
+- [Library](/#collection): Browse animations and open the Playground to adjust color, speed, and density.
+
+## Source
+
+- [GitHub repository](https://github.com/grant-atl/dotlab): Website, animation source, README, tests, and MIT license.

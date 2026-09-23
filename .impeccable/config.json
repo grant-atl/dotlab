@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "instrument sans",
+        "createdAt": "2026-09-21T18:13:40.836Z",
+        "reason": "Assistant decided: Instrument Sans was intentionally selected as the restrained UI companion to Instrument Serif for Dot / Lab; the pairing has been visually reviewed at desktop and mobile sizes."
+      }
+    ]
+  }
+}
