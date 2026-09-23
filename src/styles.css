@@ -1244,22 +1244,44 @@ dialog::backdrop {
     padding-right: 21px;
   }
   .site-header {
-    height: 76px;
+    height: auto;
+    min-height: 76px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    row-gap: 6px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
   .brand {
     font-size: 26px;
     gap: 9px;
   }
+  .site-header .brand {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
   .site-header nav {
-    gap: 20px;
-    font-size: 11px;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 24px;
+    font-size: 14px;
+  }
+  .site-header nav a,
+  .site-header nav button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
   .nav-count {
     display: none;
   }
   .header-source {
-    width: 32px;
-    height: 32px;
+    grid-column: 2;
+    grid-row: 1;
+    width: 44px;
+    height: 44px;
     padding: 0;
     justify-content: center;
   }
@@ -1374,49 +1396,27 @@ dialog::backdrop {
     height: 35px;
   }
   .animation-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 13px 11px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
   }
   .card-stage {
-    height: 180px;
+    height: clamp(260px, 70vw, 300px);
   }
   .card-info {
-    min-height: 76px;
-    padding: 12px 10px;
+    min-height: 88px;
+    padding: 18px;
     align-items: flex-start;
-    position: relative;
   }
   .card-info h3 {
-    font-size: 12px;
-    margin-bottom: 5px;
+    font-size: 16px;
+    margin-bottom: 6px;
   }
   .card-info p {
-    font-size: 8px;
-    line-height: 1.4;
-    padding-right: 0;
+    font-size: 12px;
+    line-height: 1.5;
   }
   .category-label {
     display: none;
-  }
-  .card-number {
-    font-size: 8px;
-    top: 12px;
-    left: 12px;
-  }
-  .card-preview-label {
-    font-size: 5px;
-    top: 13px;
-    right: 10px;
-    letter-spacing: 0.35px;
-    gap: 4px;
-  }
-  .card-preview-label > span {
-    width: 2px;
-    height: 2px;
-  }
-  .card-use {
-    font-size: 8px;
-    padding: 5px 7px;
   }
   .site-footer {
     flex-wrap: wrap;
@@ -1552,18 +1552,12 @@ dialog::backdrop {
     padding-left: 16px;
     padding-right: 16px;
   }
-  .site-header nav {
-    gap: 13px;
-  }
   .filter {
     font-size: 8px;
     padding: 8px 6px;
   }
   .hero-facts {
     gap: 10px;
-  }
-  .card-stage {
-    height: 155px;
   }
   .hero-art {
     height: 340px;
