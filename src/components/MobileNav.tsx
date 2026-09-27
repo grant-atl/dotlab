@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-export function MobileNav({ onPlayground, reducedMotion }: {
+export function MobileNav({ onPlayground, reducedMotion, systemsPage = false, systemCount = 8 }: {
   onPlayground: () => void;
   reducedMotion: boolean;
+  systemsPage?: boolean;
+  systemCount?: number;
 }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -85,13 +87,16 @@ export function MobileNav({ onPlayground, reducedMotion }: {
               open: { opacity: 1, y: 0, scale: 1, transition: { duration: reducedMotion ? 0 : 0.22, ease: [0.16, 1, 0.3, 1] } },
             }}
           >
-            <motion.a className="mobile-menu-link" href="#collection" variants={rows} custom={0} onClick={select}>
-              Library <span className="mobile-menu-arrow" aria-hidden="true">↓</span>
+            <motion.a className="mobile-menu-link" href="/#collection" aria-current={!systemsPage ? "page" : undefined} variants={rows} custom={0} onClick={select}>
+              Dot patterns <span className="mobile-menu-arrow" aria-hidden="true">20</span>
             </motion.a>
-            <motion.button type="button" className="mobile-menu-link" variants={rows} custom={1} onClick={() => { select(); onPlayground(); }}>
+            <motion.a className="mobile-menu-link" href="/dynamical-systems/" aria-current={systemsPage ? "page" : undefined} variants={rows} custom={1} onClick={select}>
+              Dynamical systems <span className="mobile-menu-arrow" aria-hidden="true">{systemCount}</span>
+            </motion.a>
+            <motion.button type="button" className="mobile-menu-link" variants={rows} custom={2} onClick={() => { select(); onPlayground(); }}>
               Playground <span className="mobile-menu-arrow" aria-hidden="true">→</span>
             </motion.button>
-            <motion.a className="mobile-menu-link" href="https://github.com/grant-atl/dotlab" target="_blank" rel="noreferrer" variants={rows} custom={2} onClick={select}>
+            <motion.a className="mobile-menu-link" href="https://github.com/grant-atl/dotlab" target="_blank" rel="noreferrer" variants={rows} custom={3} onClick={select}>
               GitHub <span className="mobile-menu-arrow" aria-hidden="true">↗</span>
             </motion.a>
           </motion.nav>

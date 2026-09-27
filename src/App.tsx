@@ -3,88 +3,13 @@ import { ThinkingOrb } from "thinking-orbs";
 import { DotField } from "./components/DotField";
 import { MobileNav } from "./components/MobileNav";
 import { PATTERNS, type PatternId } from "./lib/patterns";
-import { closeDialog } from "./lib/dialog";
+import { Icon, Toast, useDialog, COLORS, type CopyHandler } from "./components/ui";
+import { DynamicsLibrary } from "./components/DynamicsLibrary";
+import { DynamicsPlayground } from "./components/DynamicsPlayground";
+import { SYSTEMS, type SystemId } from "./lib/dynamics";
 import fieldSource from "./components/DotField.tsx?raw";
 import patternsSource from "./lib/patterns.ts?raw";
 import license from "../LICENSE?raw";
-
-type IconName =
-  | "arrow"
-  | "down"
-  | "code"
-  | "copy"
-  | "check"
-  | "pause"
-  | "play"
-  | "close"
-  | "search"
-  | "sun"
-  | "moon"
-  | "reset"
-  | "external";
-function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
-  const paths: Record<IconName, React.ReactNode> = {
-    arrow: <path d="M5 12h14m-6-6 6 6-6 6" />,
-    down: <path d="M12 4v15m-6-6 6 6 6-6" />,
-    code: (
-      <>
-        <path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16" />
-      </>
-    ),
-    copy: (
-      <>
-        <rect x="8" y="8" width="12" height="12" rx="2" />
-        <path d="M16 8V4H4v12h4" />
-      </>
-    ),
-    check: <path d="m5 12 4 4L19 6" />,
-    pause: (
-      <>
-        <path d="M9 5v14M15 5v14" />
-      </>
-    ),
-    play: <path d="m8 5 11 7-11 7Z" />,
-    close: <path d="m6 6 12 12M6 18 18 6" />,
-    search: (
-      <>
-        <circle cx="10.5" cy="10.5" r="6.5" />
-        <path d="m16 16 5 5" />
-      </>
-    ),
-    sun: (
-      <>
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
-      </>
-    ),
-    moon: <path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z" />,
-    reset: (
-      <>
-        <path d="M4 10a8 8 0 1 1 1 7M4 4v6h6" />
-      </>
-    ),
-    external: (
-      <>
-        <path d="M14 4h6v6m0-6L10 14M10 4H4v16h16v-6" />
-      </>
-    ),
-  };
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      {paths[name]}
-    </svg>
-  );
-}
 
 function Mark() {
   return (
@@ -97,7 +22,6 @@ function Mark() {
 }
 
 const portableSource = `'use client';\n\n/*\n${license.trim()}\n*/\n\n${patternsSource}\n${fieldSource.replace(/^import .*from ['"]\.\.\/lib\/patterns['"];?\r?\n/gm, "")}`;
-const COLORS = ["#baff66", "#e8ece3", "#9bc8ff", "#c5a3ff", "#ffab86"];
 const HERO_PATTERNS: PatternId[] = ["sphere", "torus", "wave"];
 
 function downloadSource() {
@@ -111,7 +35,7 @@ function downloadSource() {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export default function App() {
+export default function App({ systemsPage = false }: { systemsPage?: boolean }) {
   const [category, setCategory] = useState("All animations");
   const [query, setQuery] = useState("");
   const [paused, setPaused] = useState(false);
@@ -120,6 +44,7 @@ export default function App() {
   );
   const [heroIndex, setHeroIndex] = useState(0);
   const [selected, setSelected] = useState<PatternId | null>(null);
+  const [selectedSystem, setSelectedSystem] = useState<SystemId | null>(null);
   const [toast, setToast] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -141,7 +66,7 @@ export default function App() {
     const handleKey = (event: KeyboardEvent) => {
       if (
         event.key === "/" &&
-        !selected &&
+        !selected && !selectedSystem && !systemsPage &&
         !(event.target instanceof HTMLInputElement)
       ) {
         event.preventDefault();
@@ -150,7 +75,7 @@ export default function App() {
     };
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
-  }, [selected]);
+  }, [selected, selectedSystem, systemsPage]);
 
   const shown = PATTERNS.filter(
     (pattern) =>
@@ -159,7 +84,8 @@ export default function App() {
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
-  const stopMotion = paused || reducedMotion || !!selected;
+  const stopMotion = paused || reducedMotion || !!selected || !!selectedSystem;
+  const openPlayground = () => systemsPage ? setSelectedSystem("lorenz") : setSelected("sphere");
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero || stopMotion) return;
@@ -209,7 +135,7 @@ export default function App() {
         Skip to animations
       </a>
       <header className="site-header">
-        <a className="brand" href="#" aria-label="Dot Lab home">
+        <a className="brand" href="/" aria-label="Dot Lab home">
           <Mark />
           <span>
             dot<span className="brand-slash">/</span>lab
@@ -217,10 +143,13 @@ export default function App() {
           </span>
         </a>
         <nav aria-label="Main navigation">
-          <a className="nav-active" href="#collection">
-            Library <span className="nav-count">20</span>
+          <a className={!systemsPage ? "nav-active" : ""} href="/#collection" aria-current={!systemsPage ? "page" : undefined}>
+            Dot patterns <span className="nav-count">20</span>
           </a>
-          <button onClick={() => setSelected("sphere")}>Playground</button>
+          <a className={systemsPage ? "nav-active" : ""} href="/dynamical-systems/" aria-current={systemsPage ? "page" : undefined}>
+            Dynamical systems <span className="nav-count">{SYSTEMS.length}</span>
+          </a>
+          <button onClick={openPlayground}>Playground</button>
         </nav>
         <a
           className="header-source"
@@ -234,16 +163,25 @@ export default function App() {
           <Icon name="external" size={13} />
         </a>
         <MobileNav
-          onPlayground={() => setSelected("sphere")}
+          onPlayground={openPlayground}
+          systemsPage={systemsPage}
+          systemCount={SYSTEMS.length}
           reducedMotion={reducedMotion}
         />
       </header>
 
-      <main>
+      {systemsPage ? (
+        <DynamicsLibrary
+          paused={stopMotion}
+          reducedMotion={reducedMotion}
+          onTogglePause={() => setPaused(!paused)}
+          onSelect={setSelectedSystem}
+        />
+      ) : <main>
         <section className="hero" aria-labelledby="hero-heading">
           <div className="hero-copy">
             <h1 id="hero-heading">
-              Dot animations
+              Dot patterns
               <br />
               for React
             </h1>
@@ -276,7 +214,7 @@ export default function App() {
                 pattern={HERO_PATTERNS[heroIndex]}
                 color="#baff66"
                 density={1.65}
-                speed={0.65}
+                speed={0.325}
                 paused={stopMotion}
                 morph
               />
@@ -418,7 +356,7 @@ export default function App() {
                       pattern={pattern.id}
                       color={index === 0 ? "#baff66" : "#d9dfd3"}
                       density={0.85}
-                      speed={0.75}
+                      speed={0.375}
                       paused={stopMotion}
                     />
                     <span className="card-use">
@@ -452,10 +390,10 @@ export default function App() {
             </div>
           )}
         </section>
-      </main>
+      </main>}
 
       <footer className="site-footer">
-        <a className="brand" href="#">
+        <a className="brand" href="/">
           <Mark />
           <span>
             dot<span className="brand-slash">/</span>lab
@@ -486,61 +424,21 @@ export default function App() {
           onCopy={copy}
         />
       )}
-      {!selected && <Toast message={toast} />}
+      {selectedSystem && (
+        <DynamicsPlayground
+          key={selectedSystem}
+          initialSystem={selectedSystem}
+          reducedMotion={reducedMotion}
+          message={toast}
+          onClose={() => setSelectedSystem(null)}
+          onCopy={copy}
+        />
+      )}
+      {!selected && !selectedSystem && <Toast message={toast} />}
     </>
   );
 }
 
-function Toast({ message }: { message: string }) {
-  return (
-    <div
-      className={`toast ${message ? "visible" : ""}`}
-      role="status"
-      aria-live="polite"
-    >
-      {message && (
-        <>
-          <Icon
-            name={message.startsWith("Clipboard") ? "copy" : "check"}
-            size={17}
-          />
-          {message}
-        </>
-      )}
-    </div>
-  );
-}
-
-function useDialog(onClose: () => void, reducedMotion: boolean) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    dialog?.showModal();
-    const oldOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = oldOverflow;
-      dialog?.getAnimations().forEach((animation) => animation.cancel());
-      dialog?.close();
-    };
-  }, []);
-  const close = () => closeDialog(dialogRef.current, onClose, reducedMotion);
-  return {
-    close,
-    props: {
-      ref: dialogRef,
-      onCancel: (event: React.SyntheticEvent<HTMLDialogElement>) => {
-        event.preventDefault();
-        close();
-      },
-      onClick: (event: React.MouseEvent<HTMLDialogElement>) => {
-        if (event.target === event.currentTarget) close();
-      },
-    },
-  };
-}
-
-type CopyHandler = (text: string, message?: string) => Promise<void>;
 function Playground({
   initialPattern,
   reducedMotion,
@@ -556,7 +454,7 @@ function Playground({
 }) {
   const [pattern, setPattern] = useState(initialPattern);
   const [color, setColor] = useState(COLORS[0]);
-  const [speed, setSpeed] = useState(1);
+  const [speed, setSpeed] = useState(0.5);
   const [density, setDensity] = useState(1);
   const [paused, setPaused] = useState(false);
   const [light, setLight] = useState(false);
@@ -748,7 +646,7 @@ function Playground({
             <button
               className="text-button reset-button"
               onClick={() => {
-                setSpeed(1);
+                setSpeed(0.5);
                 setDensity(1);
                 setColor(COLORS[0]);
                 setLight(false);

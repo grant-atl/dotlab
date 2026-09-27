@@ -87,11 +87,12 @@ test("mobile navigation dismisses safely and restores focus before opening the p
     window.innerWidth = 390;
     show();
     const links = find("mobile-menu-link");
-    assert.equal(links[0].props.href, "#collection");
-    assert.equal(links[2].props.href, "https://github.com/grant-atl/dotlab");
-    assert.equal(links[2].props.rel, "noreferrer");
+    assert.equal(links[0].props.href, "/#collection");
+    assert.equal(links[1].props.href, "/dynamical-systems/");
+    assert.equal(links[3].props.href, "https://github.com/grant-atl/dotlab");
+    assert.equal(links[3].props.rel, "noreferrer");
     focused = undefined;
-    links[1].props.onClick();
+    links[2].props.onClick();
     render();
     assert.equal(launches, 1);
     assert.equal(open, false);

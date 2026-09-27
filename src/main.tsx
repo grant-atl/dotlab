@@ -3,8 +3,10 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./styles.css";
 
-const notFound = !["/", "/index.html"].includes(window.location.pathname);
+const systemsPage = ["/dynamical-systems", "/dynamical-systems/", "/dynamical-systems/index.html"].includes(window.location.pathname);
+const notFound = !systemsPage && !["/", "/index.html"].includes(window.location.pathname);
 if (notFound) document.title = "Page not found | Dot / Lab";
+if (systemsPage) document.title = "Dynamical systems & strange attractors | Dot / Lab";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,6 +26,6 @@ createRoot(document.getElementById("root")!).render(
           <a className="button button-primary" href="/">Back to library</a>
         </main>
       </>
-    ) : <App />}
+    ) : <App systemsPage={systemsPage} />}
   </StrictMode>,
 );

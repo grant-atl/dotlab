@@ -209,6 +209,37 @@ main,
 .mobile-nav {
   display: none;
 }
+.dynamics-page .hero-copy > p {
+  max-width: 390px;
+}
+.systems-hero-art .hero-field {
+  inset: 30px -12px 64px;
+}
+.systems-grid .card-info {
+  min-height: 98px;
+}
+.card-equation {
+  border-top: 1px solid var(--line);
+  padding: 13px 18px;
+  color: #a8b79b;
+  font: 11px/1.6 var(--mono);
+  overflow-wrap: anywhere;
+}
+.systems-explainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  border-top: 1px solid var(--line);
+  margin-top: 40px;
+  padding-top: 25px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.systems-explainer strong {
+  color: #c3cdb8;
+  font-weight: 500;
+}
 .hero {
   position: relative;
   display: grid;
@@ -1152,6 +1183,10 @@ dialog::backdrop {
     font-size: 10px;
     padding: 9px;
   }
+  .header-source > span,
+  .header-source > svg:last-child {
+    display: none;
+  }
   .hero {
     min-height: 510px;
     grid-template-columns: 1.12fr 1fr;
@@ -1427,6 +1462,11 @@ dialog::backdrop {
   .animation-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 18px;
+  }
+  .systems-explainer {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 28px;
   }
   .card-stage {
     height: clamp(260px, 70vw, 300px);

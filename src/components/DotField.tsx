@@ -15,7 +15,7 @@ export type DotFieldProps = {
 export function DotField({
   pattern = "sphere",
   color = "#baff66",
-  speed = 1,
+  speed = 0.5,
   paused = false,
   density = 1,
   morph = false,
@@ -45,7 +45,7 @@ export function DotField({
     );
     const clockSpeed = Number.isFinite(speed)
       ? Math.max(0, Math.min(5, speed))
-      : 1;
+      : 0.5;
     const shape = shapeRef.current;
     if (shape.pattern !== pattern) {
       shape.from =

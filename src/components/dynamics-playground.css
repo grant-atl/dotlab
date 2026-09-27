@@ -1,0 +1,310 @@
+.playground-dialog.dynamics-dialog {
+  width: 1080px;
+}
+.dynamics-dialog .playground-layout {
+  grid-template-columns: minmax(0, 1fr) 240px;
+}
+.dynamics-dialog .playground-main {
+  position: sticky;
+  top: 20px;
+  align-self: start;
+}
+.dynamics-dialog .dynamics-stage {
+  height: 330px;
+}
+.dynamics-playback,
+.dynamics-playback > div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.dynamics-playback {
+  justify-content: space-between;
+  margin: 12px 0 20px;
+}
+.dynamics-playback .button {
+  padding: 9px 12px;
+  gap: 6px;
+  font-size: 10px;
+}
+.dynamics-playback .text-button {
+  margin-left: 4px;
+  font-size: 10px;
+  gap: 5px;
+  color: #a4bb91;
+}
+.dynamics-iteration {
+  font: 10px var(--mono);
+  color: #91a57e;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dynamics-marker-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  font-size: 10px;
+  color: #a4bb91;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.dynamics-marker-toggle input {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--lime);
+}
+.dynamics-equations,
+.dynamics-values {
+  border-top: 1px solid #303d26;
+  padding-top: 15px;
+}
+.dynamics-math {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+}
+.dynamics-values {
+  min-width: 0;
+}
+.dynamics-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.dynamics-section-heading h3,
+.dynamics-coefficients legend {
+  font-size: 11px;
+  font-weight: 500;
+  color: #c6d5b9;
+}
+.dynamics-section-heading a,
+.dynamics-section-heading > span {
+  font: 9px var(--mono);
+  color: #91a57e;
+}
+.dynamics-section-heading a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.dynamics-section-heading a:hover {
+  color: var(--lime);
+}
+.dynamics-formulas {
+  display: grid;
+  gap: 6px;
+}
+.dynamics-formulas code {
+  font: 12px/1.6 var(--mono);
+  color: #c4ddb0;
+  overflow-wrap: anywhere;
+}
+.dynamics-coefficient-values {
+  font: 9px/1.8 var(--mono);
+  color: #8fa77b;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+.dynamics-values table {
+  border-collapse: collapse;
+  width: 100%;
+  font: 11px/1.7 var(--mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.dynamics-values th {
+  font-weight: 400;
+}
+.dynamics-values thead th {
+  color: #849a72;
+  font-size: 9px;
+  padding-bottom: 6px;
+}
+.dynamics-values tbody th,
+.dynamics-values tbody td {
+  border-top: 1px solid #283222;
+  padding: 5px 0;
+}
+.dynamics-values th:first-child {
+  text-align: left;
+}
+.dynamics-values td {
+  color: #c3d9b1;
+}
+.dynamics-calculation-note,
+.dynamics-motion-note,
+.dynamics-control-note {
+  font-size: 10px;
+  line-height: 1.65;
+  color: #8a9f78;
+}
+.dynamics-calculation-note {
+  margin-top: 10px;
+}
+.dynamics-motion-note,
+.dynamics-escaped {
+  margin: -5px 0 18px;
+}
+.dynamics-escaped {
+  font-size: 11px;
+  line-height: 1.65;
+  color: #ffbf9d;
+}
+.dynamics-system-description {
+  margin-top: 10px;
+  font-size: 10px;
+  line-height: 1.7;
+  color: #8fa47d;
+}
+.dynamics-coefficients {
+  border: 0;
+  padding: 0;
+  margin: 25px 0 22px;
+  min-width: 0;
+}
+.dynamics-coefficients legend {
+  padding: 0;
+}
+.dynamics-coefficients .control-section {
+  margin-top: 20px;
+}
+.dynamics-coefficients .range-label {
+  margin-bottom: 8px;
+}
+.dynamics-dialog input[type="range"] {
+  height: 32px;
+  margin: 0;
+  background: transparent;
+}
+.dynamics-dialog input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  background: #3b4c2f;
+  border-radius: 3px;
+}
+.dynamics-dialog input[type="range"]::-webkit-slider-thumb {
+  margin-top: -4px;
+}
+.dynamics-dialog input[type="range"]::-moz-range-track {
+  height: 3px;
+  background: #3b4c2f;
+  border-radius: 3px;
+}
+.dynamics-coefficients .reset-button {
+  margin-top: 13px;
+}
+.dynamics-parameter-note {
+  margin-top: 14px;
+}
+.dynamics-motion-controls {
+  margin-bottom: 22px;
+}
+.dynamics-dialog .dynamics-motion-controls .control-section {
+  display: block;
+}
+.dynamics-dialog .dynamics-motion-controls .control-section:first-child {
+  margin-top: 0;
+}
+.dynamics-noise-options {
+  margin-top: 16px;
+}
+.dynamics-noise-options .reset-button {
+  margin-top: 13px;
+}
+.dynamics-appearance {
+  border-top: 1px solid #35432b;
+  padding-top: 16px;
+}
+.dynamics-appearance summary {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+  font-size: 11px;
+  color: #c6d5b9;
+}
+.dynamics-appearance summary::-webkit-details-marker {
+  display: none;
+}
+.dynamics-appearance summary:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 5px;
+}
+.dynamics-appearance summary > span {
+  color: #91b474;
+}
+.dynamics-appearance[open] summary > span {
+  transform: rotate(45deg);
+}
+.dynamics-dialog .dynamics-usage {
+  height: auto;
+  min-height: 420px;
+}
+.dynamics-usage p + p {
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .dynamics-dialog .playground-layout {
+    grid-template-columns: minmax(0, 1fr) 210px;
+  }
+  .dynamics-dialog .dynamics-stage {
+    height: 300px;
+  }
+  .dynamics-playback {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 650px) {
+  .dynamics-dialog .playground-main {
+    position: static;
+  }
+  .dynamics-math {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .dynamics-dialog .playground-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dynamics-dialog .dynamics-settings {
+    display: block;
+    border-top: 1px solid #35432b;
+    padding-top: 22px;
+  }
+  .dynamics-dialog .dynamics-stage {
+    height: 300px;
+  }
+  .dynamics-dialog .control-section {
+    margin-top: 20px;
+  }
+  .dynamics-dialog .dynamics-coefficients .control-section:first-of-type,
+  .dynamics-dialog .dynamics-appearance .control-section:first-of-type {
+    display: block;
+  }
+  .dynamics-dialog .dynamics-settings > .control-label {
+    margin-bottom: 11px;
+  }
+  .dynamics-dialog .export-actions {
+    margin-top: 24px;
+  }
+  .dynamics-playback {
+    gap: 12px;
+  }
+  .dynamics-formulas code {
+    font-size: 11px;
+  }
+  .dynamics-appearance .color-swatches {
+    gap: 12px;
+    margin-bottom: 13px;
+  }
+  .dynamics-dialog .dynamics-appearance .control-section > .control-label {
+    margin-bottom: 11px;
+  }
+  .dynamics-dialog .dynamics-usage {
+    min-height: 370px;
+  }
+}

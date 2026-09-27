@@ -1,6 +1,6 @@
 # Dot / Lab
 
-> A library of 20 Canvas 2D dot animations for React hero sections, licensed under MIT.
+> A library of 20 Canvas 2D dot patterns and eight dynamical systems for React, licensed under MIT.
 
 Open an animation in the Library to access its Playground. Download .tsx saves a standalone DotField.tsx containing all 20 patterns and the license. Copy component copies the same source with a commented usage example using the current settings. The Code tab's Copy usage button copies only the usage example.
 
@@ -18,7 +18,7 @@ Props and defaults:
 
 - `pattern`: `"sphere"`; select one of the IDs below.
 - `color`: `"#baff66"`; any CSS color.
-- `speed`: `1`; clamped to 0–5. Zero stops animation.
+- `speed`: `0.5`; clamped to 0–5. Zero stops animation.
 - `paused`: `false`; freezes animation at its current time.
 - `density`: `1`; 1,150 dots by default, clamped to 160–2,200 dots.
 - `morph`: `false`; animates a transition when the caller changes `pattern`.
@@ -41,7 +41,22 @@ Keep the included MIT license notice when redistributing the component.
 ## Pages
 
 - [Home](/): Hero preview and link to the GitHub repository.
-- [Library](/#collection): Browse animations and open the Playground to adjust color, speed, and density.
+- [Dot patterns](/#collection): Browse the original 20 animations and open the Playground to adjust color, speed, and density.
+- [Dynamical systems](/dynamical-systems/): Lorenz, Rössler, Thomas, Hénon, Clifford, Chua, Rucklidge, and Rabinovich–Fabrikant. Includes live equations, parameter controls, current values, pause/step, and standalone TSX export.
+
+## Dynamical systems exports
+
+The systems playground downloads Attractor.tsx, including the current system, coefficients, appearance, motion settings, and random seed in its default Attractor component. Import Attractor from './Attractor' and render <Attractor style={{ height: 480 }} />. The file includes its renderer, equations, particle noise, and MIT license. React 18+ is its only runtime dependency.
+
+Every particle has an independent base state and advances under the equations. Continuous flows use fixed-step RK4 integration with interpolation for smooth drawing; discrete maps apply the recurrence directly with visual easing between calculated states. Speed changes the number of numerical steps per second. Simulations discard a warm-up transient, stop offscreen or in hidden tabs, and respect reduced motion. Live values represent the tracked particle's exact underlying numerical state; flow readouts show derivatives, and map readouts show the next state.
+
+The fade prop controls independent per-particle opacity cycles (0–1, default 0.7). The drift prop controls gentle camera wandering without altering the equations (0–1, default 0.6). The trails prop controls short motion trails (0–1, default 0.55). Set these to 0 to disable their respective effects. Speed accepts 0–5 and defaults to 0.5. Pause freezes particles, fading, and camera drift together; appearance changes preserve the simulation.
+
+Random motion adds independent wandering offsets to displayed dots without altering the equations or live values. The randomness prop accepts 0–1, default 0 (off). noiseDirection is 'all' (All directions, default) or 'horizontal' (Side to side). noiseSeed defaults to 42; Reseed increments it to generate a different repeatable pattern. Copy/download preserves all three props.
+
+The playground's Show tracking dot checkbox controls showMarker (boolean, default false). Set it to true to display the large marker and its halo without changing particles or live values. Copy/download preserves this setting.
+
+The playground checks coefficient changes before applying them and retains the last working settings if the candidate diverges. Later divergence restores the default coefficients with a notice. Some bounded settings settle into fixed points or repeating orbits. The standalone renderer stops on divergence rather than changing the mathematical system silently.
 
 ## Source
 
