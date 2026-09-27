@@ -163,8 +163,8 @@ main,
 .site-header > nav {
   display: flex;
   align-items: center;
-  gap: 31px;
-  margin-left: 34px;
+  gap: 24px;
+  margin-left: 20px;
   font-size: 13px;
   color: #a5aa9f;
 }
@@ -1262,27 +1262,8 @@ dialog::backdrop {
     display: none;
   }
 }
-@media (max-width: 650px) {
-  html {
-    scroll-padding-top: 100px;
-  }
-  main,
-  .site-header,
-  .site-footer {
-    padding-left: 21px;
-    padding-right: 21px;
-  }
-  .site-header {
-    height: 76px;
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: #111310;
-  }
-  .brand {
-    font-size: 26px;
-    gap: 9px;
-  }
+@media (max-width: 1000px) {
+  .site-header { position: relative; z-index: 20; }
   .site-header > nav,
   .site-header > .header-source {
     display: none;
@@ -1356,6 +1337,28 @@ dialog::backdrop {
   .mobile-menu-arrow {
     color: #9caf87;
     font-size: 20px;
+  }
+}
+@media (max-width: 650px) {
+  html {
+    scroll-padding-top: 100px;
+  }
+  main,
+  .site-header,
+  .site-footer {
+    padding-left: 21px;
+    padding-right: 21px;
+  }
+  .site-header {
+    height: 76px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #111310;
+  }
+  .brand {
+    font-size: 26px;
+    gap: 9px;
   }
   .hero {
     display: flex;

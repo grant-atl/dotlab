@@ -1,6 +1,6 @@
 # Dot / Lab
 
-20 dot patterns and eight dynamical systems for React. Both libraries have a playground, and you can download the source to use in your own project.
+20 dot patterns, eight dynamical systems, and nine loader states for React. Each library has a playground, and you can download the source to use in your own project.
 
 The animations use Canvas 2D. The downloaded component needs React 18 or newer and has no other runtime dependencies.
 
@@ -98,6 +98,33 @@ The `randomness` prop accepts `0`–`1` and defaults to `0`. `noiseDirection` ac
 
 Some parameter settings settle into a point or repeating orbit. These are numerical visualizations, not proofs of chaos for every setting. The standalone renderer stops on divergence; it does not silently clamp the coordinates or replace the equations.
 
+## Dot loaders
+
+Open [Dot loaders](https://dotlab.grantpedersen.com/loaders/) to preview compact indicators for interface states:
+
+```text
+idle connecting listening searching retrieving
+processing generating streaming complete
+```
+
+The playground shows an enlarged preview and actual-size examples at 20, 24, and 64 pixels. Adjust the state, size, speed, intensity, color, dot size, spacing, depth, and viewing angles. The listening state's input level is a manual preview; the library does not access the microphone. Pass your own input level through `level` if needed.
+
+Processing alternates quarter-turns of horizontal and vertical layers. Complete gathers all 27 dots into the center, pauses, and reforms the idle cube. That sequence runs once when entering `complete`, then continues with idle breathing; the `state` prop stays under your app's control. Use Replay completion in the playground to watch it again without changing your settings.
+
+Download `.tsx` saves `DotLoader.tsx` with all states and your selected settings. Import its default export to use that preset, and pass `state` from your app as the operation changes:
+
+```tsx
+import DotLoader, { type LoaderState } from './DotLoader';
+
+export default function AssistantStatus({ state }: { state: LoaderState }) {
+  return <DotLoader state={state} label={state} />;
+}
+```
+
+The named `DotLoader` export uses the component defaults instead: `state="processing"`, `size={64}`, `color="#baff66"`, `speed={0.7}`, `intensity={0.65}`, `spacing={1}`, `dotSize={1}`, `depth={0.65}`, `yaw={-32}`, `pitch={22}`, `level={0.5}`, and `paused={false}`. Angles are in degrees. Supply `label` for an accessible name; omit it when adjacent text already describes the state. Optional `className` and `style` apply to the component.
+
+State changes transition in place. Pausing or setting speed to zero freezes motion; reduced-motion preferences show a still state. The canvas is transparent. The light/dark switch changes only the playground background and selects a readable dot color; the chosen color is included in the export. Downloaded loaders import only React and include the MIT license.
+
 ## Development
 
 | Command | What it does |
@@ -111,7 +138,7 @@ The shape formulas are in [patterns.ts](src/lib/patterns.ts). [DotField.tsx](src
 
 The [llms.txt](public/llms.txt) reference is served at `/llms.txt`.
 
-The build includes `dynamical-systems/index.html` for direct navigation on static hosts, plus `404.html`. Configure your static host to serve the latter for missing pages with an HTTP 404 response.
+The build includes `dynamical-systems/index.html` and `loaders/index.html` for direct navigation on static hosts, plus `404.html`. Configure your static host to serve the latter for missing pages with an HTTP 404 response.
 
 ## License and credit
 

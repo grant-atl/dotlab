@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { AnimatePresence, motion, useIsPresent } from "motion/react";
 import { ThinkingOrb } from "thinking-orbs";
 import { DotField } from "./components/DotField";
 import { MobileNav } from "./components/MobileNav";
@@ -7,6 +8,10 @@ import { Icon, Toast, useDialog, COLORS, type CopyHandler } from "./components/u
 import { DynamicsLibrary } from "./components/DynamicsLibrary";
 import { DynamicsPlayground } from "./components/DynamicsPlayground";
 import { SYSTEMS, type SystemId } from "./lib/dynamics";
+import { LoaderLibrary } from "./components/LoaderLibrary";
+import { LoaderPlayground } from "./components/LoaderPlayground";
+import { LOADER_STATES, type LoaderState } from "./lib/loaders";
+import { useCollectionNavigation } from "./lib/collection-navigation";
 import fieldSource from "./components/DotField.tsx?raw";
 import patternsSource from "./lib/patterns.ts?raw";
 import license from "../LICENSE?raw";
@@ -35,7 +40,15 @@ function downloadSource() {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export default function App({ systemsPage = false }: { systemsPage?: boolean }) {
+export default function App() {
+  const { page, finishNavigation } = useCollectionNavigation();
+  const [mountedPage, setMountedPage] = useState(page);
+  const systemsPage = page === "systems";
+  const loadersPage = page === "loaders";
+  const pageReady = useCallback(() => {
+    finishNavigation();
+    setMountedPage(page);
+  }, [page, finishNavigation]);
   const [category, setCategory] = useState("All animations");
   const [query, setQuery] = useState("");
   const [paused, setPaused] = useState(false);
@@ -45,9 +58,17 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
   const [heroIndex, setHeroIndex] = useState(0);
   const [selected, setSelected] = useState<PatternId | null>(null);
   const [selectedSystem, setSelectedSystem] = useState<SystemId | null>(null);
+  const [selectedLoader, setSelectedLoader] = useState<LoaderState | null>(null);
   const [toast, setToast] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setSelected(null);
+    setSelectedSystem(null);
+    setSelectedLoader(null);
+    setToast("");
+  }, [page]);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -66,7 +87,7 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
     const handleKey = (event: KeyboardEvent) => {
       if (
         event.key === "/" &&
-        !selected && !selectedSystem && !systemsPage &&
+        !selected && !selectedSystem && !selectedLoader && !systemsPage && !loadersPage &&
         !(event.target instanceof HTMLInputElement)
       ) {
         event.preventDefault();
@@ -75,7 +96,7 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
     };
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
-  }, [selected, selectedSystem, systemsPage]);
+  }, [selected, selectedSystem, selectedLoader, systemsPage, loadersPage]);
 
   const shown = PATTERNS.filter(
     (pattern) =>
@@ -84,8 +105,8 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
-  const stopMotion = paused || reducedMotion || !!selected || !!selectedSystem;
-  const openPlayground = () => systemsPage ? setSelectedSystem("lorenz") : setSelected("sphere");
+  const stopMotion = paused || reducedMotion || !!selected || !!selectedSystem || !!selectedLoader;
+  const openPlayground = () => loadersPage ? setSelectedLoader("processing") : systemsPage ? setSelectedSystem("lorenz") : setSelected("sphere");
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero || stopMotion) return;
@@ -116,7 +137,7 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
       hero.removeEventListener("focusin", schedule);
       hero.removeEventListener("focusout", schedule);
     };
-  }, [heroIndex, stopMotion]);
+  }, [heroIndex, stopMotion, mountedPage]);
   const heroPattern = PATTERNS.find(
     (pattern) => pattern.id === HERO_PATTERNS[heroIndex],
   )!;
@@ -143,11 +164,14 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
           </span>
         </a>
         <nav aria-label="Main navigation">
-          <a className={!systemsPage ? "nav-active" : ""} href="/#collection" aria-current={!systemsPage ? "page" : undefined}>
+          <a className={!systemsPage && !loadersPage ? "nav-active" : ""} href="/#collection" aria-current={!systemsPage && !loadersPage ? "page" : undefined}>
             Dot patterns <span className="nav-count">20</span>
           </a>
           <a className={systemsPage ? "nav-active" : ""} href="/dynamical-systems/" aria-current={systemsPage ? "page" : undefined}>
             Dynamical systems <span className="nav-count">{SYSTEMS.length}</span>
+          </a>
+          <a className={loadersPage ? "nav-active" : ""} href="/loaders/" aria-current={loadersPage ? "page" : undefined}>
+            Loaders <span className="nav-count">{LOADER_STATES.length}</span>
           </a>
           <button onClick={openPlayground}>Playground</button>
         </nav>
@@ -165,12 +189,22 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
         <MobileNav
           onPlayground={openPlayground}
           systemsPage={systemsPage}
+          loadersPage={loadersPage}
           systemCount={SYSTEMS.length}
           reducedMotion={reducedMotion}
         />
       </header>
 
-      {systemsPage ? (
+      <AnimatePresence mode="wait" initial={false}>
+        <CollectionTransition key={page} reducedMotion={reducedMotion} onMount={pageReady}>
+      {loadersPage ? (
+        <LoaderLibrary
+          paused={stopMotion}
+          reducedMotion={reducedMotion}
+          onTogglePause={() => setPaused(!paused)}
+          onSelect={setSelectedLoader}
+        />
+      ) : systemsPage ? (
         <DynamicsLibrary
           paused={stopMotion}
           reducedMotion={reducedMotion}
@@ -391,6 +425,8 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
           )}
         </section>
       </main>}
+        </CollectionTransition>
+      </AnimatePresence>
 
       <footer className="site-footer">
         <a className="brand" href="/">
@@ -414,7 +450,7 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
         </div>
       </footer>
 
-      {selected && (
+      {page === "patterns" && selected && (
         <Playground
           key={selected}
           initialPattern={selected}
@@ -424,7 +460,7 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
           onCopy={copy}
         />
       )}
-      {selectedSystem && (
+      {systemsPage && selectedSystem && (
         <DynamicsPlayground
           key={selectedSystem}
           initialSystem={selectedSystem}
@@ -434,8 +470,36 @@ export default function App({ systemsPage = false }: { systemsPage?: boolean }) 
           onCopy={copy}
         />
       )}
-      {!selected && !selectedSystem && <Toast message={toast} />}
+      {loadersPage && selectedLoader && (
+        <LoaderPlayground
+          initialState={selectedLoader}
+          reducedMotion={reducedMotion}
+          message={toast}
+          onClose={() => setSelectedLoader(null)}
+          onCopy={copy}
+        />
+      )}
+      {!selected && !selectedSystem && !selectedLoader && <Toast message={toast} />}
     </>
+  );
+}
+
+function CollectionTransition({ children, reducedMotion, onMount }: {
+  children: ReactNode;
+  reducedMotion: boolean;
+  onMount: () => void;
+}) {
+  const present = useIsPresent();
+  useLayoutEffect(() => { if (present) onMount(); }, [present, onMount]);
+  return (
+    <motion.div
+      inert={!present}
+      initial={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 6 }}
+      animate={{ opacity: 1, y: 0, transition: { duration: reducedMotion ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] } }}
+      exit={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : -3, transition: { duration: reducedMotion ? 0 : 0.12, ease: "easeIn" } }}
+    >
+      {children}
+    </motion.div>
   );
 }
 

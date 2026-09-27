@@ -1,6 +1,6 @@
 # Dot / Lab
 
-> A library of 20 Canvas 2D dot patterns and eight dynamical systems for React, licensed under MIT.
+> A library of 20 Canvas 2D dot patterns, eight dynamical systems, and nine loader states for React, licensed under MIT.
 
 Open an animation in the Library to access its Playground. Download .tsx saves a standalone DotField.tsx containing all 20 patterns and the license. Copy component copies the same source with a commented usage example using the current settings. The Code tab's Copy usage button copies only the usage example.
 
@@ -43,6 +43,7 @@ Keep the included MIT license notice when redistributing the component.
 - [Home](/): Hero preview and link to the GitHub repository.
 - [Dot patterns](/#collection): Browse the original 20 animations and open the Playground to adjust color, speed, and density.
 - [Dynamical systems](/dynamical-systems/): Lorenz, Rössler, Thomas, Hénon, Clifford, Chua, Rucklidge, and Rabinovich–Fabrikant. Includes live equations, parameter controls, current values, pause/step, and standalone TSX export.
+- [Dot loaders](/loaders/): Compact state indicators with size examples, motion and appearance controls, and standalone TSX export.
 
 ## Dynamical systems exports
 
@@ -57,6 +58,18 @@ Random motion adds independent wandering offsets to displayed dots without alter
 The playground's Show tracking dot checkbox controls showMarker (boolean, default false). Set it to true to display the large marker and its halo without changing particles or live values. Copy/download preserves this setting.
 
 The playground checks coefficient changes before applying them and retains the last working settings if the candidate diverges. Later divergence restores the default coefficients with a notice. Some bounded settings settle into fixed points or repeating orbits. The standalone renderer stops on divergence rather than changing the mathematical system silently.
+
+## Dot loader exports
+
+The loader playground downloads DotLoader.tsx with all states, selected settings, and the MIT license. Import its default export to retain the preset; the named DotLoader export uses the base defaults. The exported client component imports only React and requires React 18+.
+
+State IDs: idle, connecting, listening, searching, retrieving, processing, generating, streaming, complete. Pass state from the application as its operation changes; the component does not perform or detect those operations.
+
+Processing alternates quarter-turns of horizontal and vertical layers. Complete runs a one-shot gather of all 27 dots into the center, holds briefly, reforms the cube, and continues as idle breathing without mutating the caller's state prop. Reduced motion skips to the final cube. The playground includes Replay completion without resetting selected settings.
+
+Defaults: state="processing", size=64 pixels, color="#baff66", speed=0.7, intensity=0.65, spacing=1, dotSize=1, depth=0.65, yaw=-32 degrees, pitch=22 degrees, level=0.5, paused=false. Optional label supplies an accessible name; omit it for a decorative indicator next to descriptive text. className and style are optional.
+
+The listening level is controlled by the caller; no microphone access is included. State transitions retain the mounted component. Pause, zero speed, and reduced-motion preferences freeze animation. The canvas is transparent; preview backgrounds are not exported. The background toggle also selects a readable dot color, which is exported.
 
 ## Source
 

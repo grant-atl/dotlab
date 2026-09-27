@@ -1,0 +1,59 @@
+.playground-dialog.loader-dialog { width: 1020px; }
+.loader-dialog .playground-layout { grid-template-columns: minmax(0, 1fr) 240px; }
+.loader-dialog .playground-main { position: sticky; top: 20px; align-self: start; }
+.loader-preview-surface { border: 1px solid #303d26; border-radius: 6px; background: #111310; color: #d7e3cb; overflow: hidden; }
+.loader-preview-surface.light { background: #f0f1eb; color: #304528; }
+.loader-stage { height: 300px; display: grid; place-items: center; position: relative; }
+.loader-magnified { transform: scale(2); display: flex; align-items: center; justify-content: center; }
+.loader-preview-caption { position: absolute; bottom: 16px; font: 9px var(--mono); color: #91a67e; }
+.light .loader-preview-caption { color: #596e4b; }
+.loader-contexts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #303d26; }
+.loader-context { min-width: 0; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 16px; }
+.loader-context + .loader-context { border-left: 1px solid #303d26; }
+.loader-context-label { font: 8px var(--mono); color: #91a67e; white-space: nowrap; }
+.light .loader-context-label { color: #596e4b; }
+.light .loader-contexts, .light .loader-context + .loader-context { border-color: #d1d8cb; }
+.loader-context-inline, .loader-context-button { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; font-size: 10px; }
+.loader-context-button { border: 1px solid #3f4d34; border-radius: 5px; padding: 5px 9px; }
+.light .loader-context-button { border-color: #bdcbb1; }
+.loader-context-avatar { margin-top: -4px; }
+.loader-playback { display: flex; flex-wrap: wrap; align-items: center; gap: 15px; margin: 16px 0 12px; }
+.loader-playback .button { padding: 9px 12px; gap: 6px; font-size: 10px; }
+.loader-playback .text-button { font-size: 10px; gap: 6px; color: #a4bb91; }
+.loader-note, .loader-state-description { font-size: 10px; line-height: 1.7; color: #91a67e; }
+.loader-state-description { margin-top: 10px; }
+.loader-dialog .control-section { display: block; margin-top: 20px; }
+.loader-dialog .control-section .range-label { margin-bottom: 4px; }
+.loader-dialog .loader-settings input[type="range"] { height: 30px; margin: 0; background: transparent; }
+.loader-dialog input[type="range"]::-webkit-slider-runnable-track { height: 3px; background: #3b4c2f; border-radius: 3px; }
+.loader-dialog input[type="range"]::-webkit-slider-thumb { margin-top: -4px; }
+.loader-dialog input[type="range"]::-moz-range-track { height: 3px; background: #3b4c2f; border-radius: 3px; }
+.loader-size-presets { display: flex; gap: 6px; margin-top: 4px; }
+.loader-size-presets button { flex: 1; padding: 6px 8px; border: 1px solid #3b4c2e; border-radius: 4px; font: 9px var(--mono); color: #a9bd97; }
+.loader-size-presets button[aria-pressed="true"] { background: #34432a; color: #e1ecd8; border-color: #6c8855; }
+.loader-appearance { border-top: 1px solid #35432b; padding-top: 16px; margin-top: 22px; }
+.loader-appearance summary { display: flex; justify-content: space-between; cursor: pointer; list-style: none; font-size: 11px; color: #c6d5b9; }
+.loader-appearance summary::-webkit-details-marker { display: none; }
+.loader-appearance summary:focus-visible { outline: 2px solid var(--lime); outline-offset: 5px; }
+.loader-appearance summary > span { color: #91b474; }
+.loader-appearance[open] summary > span { transform: rotate(45deg); }
+.loader-dialog .loader-usage { height: auto; min-height: 430px; }
+.loader-usage p + p { margin-top: 12px; }
+@media (max-width: 900px) {
+  .loader-dialog .playground-layout { grid-template-columns: minmax(0, 1fr) 210px; }
+  .loader-contexts { grid-template-columns: minmax(0, 1fr); }
+  .loader-context { flex-direction: row; justify-content: space-between; padding: 10px 16px; }
+  .loader-context + .loader-context { border-left: 0; border-top: 1px solid #303d26; }
+  .loader-context-avatar { margin-top: 0; }
+}
+@media (max-width: 650px) {
+  .loader-dialog .playground-layout { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .loader-dialog .playground-main { position: static; }
+  .loader-dialog .loader-settings { display: block; border-top: 1px solid #35432b; padding-top: 22px; }
+  .loader-dialog .loader-settings .control-section { display: block; }
+  .loader-dialog .loader-settings > .control-label { margin-bottom: 11px; }
+  .loader-dialog .loader-appearance .control-label { margin-bottom: 11px; }
+  .loader-stage { height: 285px; }
+  .loader-dialog .export-actions { margin-top: 24px; }
+  .loader-dialog .loader-usage { min-height: 330px; }
+}

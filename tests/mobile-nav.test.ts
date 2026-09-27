@@ -79,7 +79,7 @@ test("mobile navigation dismisses safely and restores focus before opening the p
     render();
     assert.equal(open, false);
     show();
-    window.innerWidth = 900;
+    window.innerWidth = 1100;
     window.dispatchEvent(new Event("resize"));
     render();
     assert.equal(open, false);
@@ -89,10 +89,11 @@ test("mobile navigation dismisses safely and restores focus before opening the p
     const links = find("mobile-menu-link");
     assert.equal(links[0].props.href, "/#collection");
     assert.equal(links[1].props.href, "/dynamical-systems/");
-    assert.equal(links[3].props.href, "https://github.com/grant-atl/dotlab");
-    assert.equal(links[3].props.rel, "noreferrer");
+    assert.equal(links[2].props.href, "/loaders/");
+    assert.equal(links[4].props.href, "https://github.com/grant-atl/dotlab");
+    assert.equal(links[4].props.rel, "noreferrer");
     focused = undefined;
-    links[2].props.onClick();
+    links[3].props.onClick();
     render();
     assert.equal(launches, 1);
     assert.equal(open, false);

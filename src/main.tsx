@@ -1,12 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import { collectionFromPath } from "./lib/collection-navigation";
 import "./styles.css";
 
-const systemsPage = ["/dynamical-systems", "/dynamical-systems/", "/dynamical-systems/index.html"].includes(window.location.pathname);
-const notFound = !systemsPage && !["/", "/index.html"].includes(window.location.pathname);
+const notFound = !collectionFromPath(window.location.pathname);
 if (notFound) document.title = "Page not found | Dot / Lab";
-if (systemsPage) document.title = "Dynamical systems & strange attractors | Dot / Lab";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -26,6 +25,6 @@ createRoot(document.getElementById("root")!).render(
           <a className="button button-primary" href="/">Back to library</a>
         </main>
       </>
-    ) : <App systemsPage={systemsPage} />}
+    ) : <App />}
   </StrictMode>,
 );
