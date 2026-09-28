@@ -383,9 +383,6 @@ export default function App() {
                     <span className="card-number">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span className="card-preview-label">
-                      LIVE PREVIEW <span />
-                    </span>
                     <DotField
                       pattern={pattern.id}
                       color={index === 0 ? "#baff66" : "#d9dfd3"}
