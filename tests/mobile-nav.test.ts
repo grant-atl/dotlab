@@ -32,6 +32,7 @@ test("mobile navigation dismisses safely and restores focus before opening the p
     },
     "react/jsx-runtime": { jsx, jsxs: jsx },
     "motion/react": { AnimatePresence: "presence", motion: { span: "span", nav: "nav", a: "a", button: "button" } },
+    "./ui": { Icon: "Icon" },
   };
   const exports: { MobileNav?: (props: object) => Element } = {};
   const source = readFileSync(new URL("../src/components/MobileNav.tsx", import.meta.url), "utf8");
@@ -92,6 +93,7 @@ test("mobile navigation dismisses safely and restores focus before opening the p
     assert.equal(links[2].props.href, "/loaders/");
     assert.equal(links[4].props.href, "https://github.com/grant-atl/dotlab");
     assert.equal(links[4].props.rel, "noreferrer");
+    assert.equal(find("mobile-menu-arrow", links[4])[0].props.children.props.name, "external");
     focused = undefined;
     links[3].props.onClick();
     render();

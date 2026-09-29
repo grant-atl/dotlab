@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { Icon } from "./ui";
 
 export function MobileNav({ onPlayground, reducedMotion, systemsPage = false, loadersPage = false, systemCount = 8 }: {
   onPlayground: () => void;
@@ -101,7 +102,7 @@ export function MobileNav({ onPlayground, reducedMotion, systemsPage = false, lo
               Playground <span className="mobile-menu-arrow" aria-hidden="true">→</span>
             </motion.button>
             <motion.a className="mobile-menu-link" href="https://github.com/grant-atl/dotlab" target="_blank" rel="noreferrer" variants={rows} custom={4} onClick={select}>
-              GitHub <span className="mobile-menu-arrow" aria-hidden="true">↗</span>
+              GitHub <span className="mobile-menu-arrow" aria-hidden="true"><Icon name="external" size={20} /></span>
             </motion.a>
           </motion.nav>
         )}
